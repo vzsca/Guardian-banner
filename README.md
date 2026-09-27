@@ -28,18 +28,17 @@ It provides configurable protection zones around Guardian Banners, owner/trusted
 
 ### Latest automated JAR
 
-The JAR is built automatically by **GitHub Actions** from the repository.
+The JAR is built automatically by **GitHub Actions** and attached to the latest GitHub Release.
 
-**[Download the latest Guardian Banner JAR](https://github.com/vzsca/Guardian-banner/actions/workflows/build.yml)**
+**[⬇️ Download the latest Guardian Banner JAR](https://github.com/vzsca/Guardian-banner/releases/latest/download/guardianbanner.jar)**
 
-To download it:
+A single click downloads the latest released JAR directly. No manual build or GitHub Actions page is required.
 
-1. Open the latest **successful** workflow run.
-2. Scroll to **Artifacts**.
-3. Download **guardianbanner**.
-4. Extract the downloaded archive and place the JAR in your Forge server's or client's `mods` folder.
+### Releases
 
-> The downloadable JAR is generated directly from the current repository source by the automated build workflow.
+**[View all Guardian Banner releases](https://github.com/vzsca/Guardian-banner/releases)**
+
+New releases are published automatically when a version tag such as `v1.4.4` is pushed.
 
 ## Requirements
 
