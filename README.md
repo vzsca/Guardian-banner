@@ -24,6 +24,23 @@ It provides configurable protection zones around Guardian Banners, owner/trusted
 - Forge GameTests
 - GitHub Actions build workflow
 
+## Download
+
+### Latest automated JAR
+
+The JAR is built automatically by **GitHub Actions** from the repository.
+
+**[Download the latest Guardian Banner JAR](https://github.com/vzsca/Guardian-banner/actions/workflows/build.yml)**
+
+To download it:
+
+1. Open the latest **successful** workflow run.
+2. Scroll to **Artifacts**.
+3. Download **guardianbanner**.
+4. Extract the downloaded archive and place the JAR in your Forge server's or client's `mods` folder.
+
+> The downloadable JAR is generated directly from the current repository source by the automated build workflow.
+
 ## Requirements
 
 - Minecraft **1.20.1**
