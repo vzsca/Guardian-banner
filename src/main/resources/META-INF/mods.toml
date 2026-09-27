@@ -1,0 +1,22 @@
+modLoader="javafml"
+loaderVersion="[47,)"
+license="MIT"
+[[mods]]
+modId="guardianbanner"
+version="1.4.3"
+displayName="Guardian Banner"
+authors="Vesca Gaming"
+logoFile="icon.png"
+description='''Protect your territory with a persistent Guardian Banner: claim chunks, defend your base, attract hostile mobs, evolve the barrier, and manage trusted players.'''
+[[dependencies.guardianbanner]]
+modId="forge"
+mandatory=true
+versionRange="[47,)"
+ordering="NONE"
+side="BOTH"
+[[dependencies.guardianbanner]]
+modId="minecraft"
+mandatory=true
+versionRange="[1.20.1,1.21)"
+ordering="NONE"
+side="BOTH"

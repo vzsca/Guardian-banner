@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "HBH",
+    "BSB",
+    "HBH"
+  ],
+  "key": {
+    "B": {
+      "tag": "guardianbanner:banners"
+    },
+    "S": {
+      "item": "minecraft:shield"
+    },
+    "H": {
+      "tag": "guardianbanner:mob_heads"
+    }
+  },
+  "result": {
+    "item": "guardianbanner:guardian_banner",
+    "count": 1
+  },
+  "category": "misc",
+  "show_notification": true
+}

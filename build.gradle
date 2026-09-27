@@ -1,0 +1,37 @@
+plugins {
+    id 'eclipse'
+    id 'idea'
+    id 'maven-publish'
+    id 'net.minecraftforge.gradle' version '[6.0,6.2)'
+}
+
+group = 'com.vescagaming'
+version = '1.4.3'
+base { archivesName = 'guardianbanner' }
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+
+minecraft {
+    mappings channel: 'official', version: '1.20.1'
+    copyIdeResources = true
+    runs {
+        configureEach {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+            mods { guardianbanner { source sourceSets.main } }
+        }
+        client { property 'forge.enabledGameTestNamespaces', 'guardianbanner' }
+        server { property 'forge.enabledGameTestNamespaces', 'guardianbanner' }
+        gameTestServer { property 'forge.enabledGameTestNamespaces', 'guardianbanner' }
+        data { workingDirectory project.file('run-data'); args '--mod', 'guardianbanner', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/') }
+    }
+}
+
+repositories { }
+
+dependencies { minecraft 'net.minecraftforge:forge:1.20.1-47.4.0' }
+
+jar { manifest { attributes(['Specification-Title':'Guardian Banner','Specification-Vendor':'Vesca Gaming','Specification-Version':'1','Implementation-Title':project.name,'Implementation-Version':project.version,'Implementation-Vendor':'Vesca Gaming']) } }
+
+jar.finalizedBy('reobfJar')

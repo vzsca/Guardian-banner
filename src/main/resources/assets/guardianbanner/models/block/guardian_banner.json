@@ -1,0 +1,43 @@
+{
+  "textures": {
+    "side": "guardianbanner:block/guardian_banner_side",
+    "top": "guardianbanner:block/guardian_banner_top"
+  },
+  "elements": [
+    {
+      "from": [5, 0, 5],
+      "to": [11, 2, 11],
+      "faces": {
+        "down": {"texture": "#side"},
+        "up": {"texture": "#top"},
+        "north": {"texture": "#side"},
+        "south": {"texture": "#side"},
+        "west": {"texture": "#side"},
+        "east": {"texture": "#side"}
+      }
+    },
+    {
+      "from": [7, 2, 7],
+      "to": [9, 16, 9],
+      "faces": {
+        "north": {"texture": "#side"},
+        "south": {"texture": "#side"},
+        "west": {"texture": "#side"},
+        "east": {"texture": "#side"},
+        "up": {"texture": "#top"}
+      }
+    },
+    {
+      "from": [2, 6, 7],
+      "to": [14, 14, 9],
+      "faces": {
+        "north": {"texture": "#side"},
+        "south": {"texture": "#side"},
+        "west": {"texture": "#side"},
+        "east": {"texture": "#side"},
+        "up": {"texture": "#top"},
+        "down": {"texture": "#side"}
+      }
+    }
+  ]
+}
