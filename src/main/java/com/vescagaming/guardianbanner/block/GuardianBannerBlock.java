@@ -76,6 +76,14 @@ public final class GuardianBannerBlock extends BaseEntityBlock {
         ItemStack held = player.getItemInHand(hand);
         if (held.is(GuardianBannerMod.GUARDIAN_SCROLL.get())
                 || held.is(net.minecraft.world.item.Items.ENCHANTED_BOOK)) {
+            // Applying upgrades changes the claim's power, so only its owner may do it.
+            if (!(level instanceof ServerLevel serverLevel)
+                    || !ClaimData.get(serverLevel).isOwner(
+                            new net.minecraft.world.level.ChunkPos(pos), player.getUUID())) {
+                player.displayClientMessage(
+                        net.minecraft.network.chat.Component.translatable("message.guardianbanner.not_owner"), true);
+                return InteractionResult.CONSUME;
+            }
             boolean applied = false;
             for (var enchantment : EnchantmentHelper.getEnchantments(held).entrySet()) {
                 applied |= banner.applyEnchant(enchantment.getKey(), enchantment.getValue());
