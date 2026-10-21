@@ -27,16 +27,23 @@ public record ClaimSyncPacket(List<Entry> entries) {
 
     public static ClaimSyncPacket decode(FriendlyByteBuf buffer) {
         int size = buffer.readVarInt();
+        // The server only sends a small area around each player. Bound the allocation and
+        // reject malformed/oversized packets before reading their entries.
+        if (size < 0 || size > 4096) {
+            throw new IllegalArgumentException("Invalid Guardian Banner claim sync size: " + size);
+        }
         List<Entry> entries = new ArrayList<>(size);
 
         for (int i = 0; i < size; i++) {
-            entries.add(new Entry(
-                    buffer.readLong(),
-                    buffer.readLong(),
-                    buffer.readFloat(),
-                    buffer.readFloat(),
-                    buffer.readBoolean()
-            ));
+            long chunk = buffer.readLong();
+            long marker = buffer.readLong();
+            float hp = buffer.readFloat();
+            float maxHp = buffer.readFloat();
+            boolean active = buffer.readBoolean();
+            if (!Float.isFinite(hp) || !Float.isFinite(maxHp) || hp < 0.0f || maxHp < 0.0f) {
+                throw new IllegalArgumentException("Invalid Guardian Banner claim sync HP values");
+            }
+            entries.add(new Entry(chunk, marker, hp, maxHp, active));
         }
 
         return new ClaimSyncPacket(entries);
