@@ -186,7 +186,8 @@ public final class GuardianBannerBlockEntity extends BlockEntity implements Menu
 
         if (barrierHp <= 0.0f) {
             active = false;
-            reactivationTick = Long.MIN_VALUE;
+            // Start the configured quiet-period repair timer when the barrier is destroyed.
+            reactivationTick = gameTime;
             if (level instanceof net.minecraft.server.level.ServerLevel serverLevel) {
                 serverLevel.sendParticles(net.minecraft.core.particles.ParticleTypes.SMOKE,
                         worldPosition.getX() + 0.5, worldPosition.getY() + 1.0, worldPosition.getZ() + 0.5,
@@ -246,6 +247,19 @@ public final class GuardianBannerBlockEntity extends BlockEntity implements Menu
         if (!(level instanceof net.minecraft.server.level.ServerLevel serverLevel)) return;
         long now = serverLevel.getGameTime();
 
+        // A destroyed barrier repairs itself only after the configured quiet period and
+        // only when no hostile mobs remain nearby. A manually disabled positive-HP barrier
+        // has no repair timer and remains disabled until its owner toggles it back on.
+        if (!active && barrierHp <= 0.0f && reactivationTick != Long.MIN_VALUE) {
+            long delay = GuardianBannerConfig.REPAIR_DELAY_SECONDS.get() * 20L;
+            if (now - reactivationTick >= delay) {
+                AABB quietArea = new AABB(worldPosition).inflate(16.0);
+                if (serverLevel.getEntitiesOfClass(Monster.class, quietArea, Monster::isAlive).isEmpty()) {
+                    reactivate();
+                }
+            }
+            return;
+        }
         if (!active) return;
         activeTicks++;
 
