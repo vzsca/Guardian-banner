@@ -12,10 +12,31 @@ import net.minecraft.world.level.Level;
 public final class GuardianBannerMenu extends AbstractContainerMenu {
     private final BlockPos pos;
     private final Level level;
-    private final DataSlot activeState = addDataSlot(new DataSlot() {
-        @Override public int get() { GuardianBannerBlockEntity b = banner(); return b != null && b.active() ? 1 : 0; }
-        @Override public void set(int value) { }
-    });
+
+    private static int syncInt(long value) {
+        return (int) Math.max(0L, Math.min(32767L, value));
+    }
+
+    private DataSlot synced(java.util.function.ToIntFunction<GuardianBannerBlockEntity> getter) {
+        return addDataSlot(new DataSlot() {
+            @Override public int get() {
+                GuardianBannerBlockEntity banner = banner();
+                return banner == null ? 0 : syncInt(getter.applyAsInt(banner));
+            }
+            @Override public void set(int value) { }
+        });
+    }
+
+    private final DataSlot activeState = synced(b -> b.active() ? 1 : 0);
+    private final DataSlot hpTenths = synced(b -> Math.round(b.hp() * 10.0f));
+    private final DataSlot maxHpTenths = synced(b -> Math.round(b.maxHp() * 10.0f));
+    private final DataSlot levelState = synced(GuardianBannerBlockEntity::level);
+    private final DataSlot killsState = synced(GuardianBannerBlockEntity::kills);
+    private final DataSlot claimsState = synced(b -> b.maxExtraClaims() + 1);
+    private final DataSlot enchantCountState = synced(GuardianBannerBlockEntity::enchantCount);
+    private final DataSlot enchantSlotsState = synced(GuardianBannerBlockEntity::enchantSlots);
+    private final DataSlot mobsAttractedState = synced(b -> syncInt(b.mobsAttracted()));
+    private final DataSlot explosionsBlockedState = synced(b -> syncInt(b.explosionsBlocked()));
 
     public GuardianBannerMenu(int id, Inventory inventory, BlockPos pos) {
         super(ModMenus.GUARDIAN_BANNER.get(), id);
@@ -29,6 +50,15 @@ public final class GuardianBannerMenu extends AbstractContainerMenu {
 
     public BlockPos pos() { return pos; }
     public boolean barrierActive() { return activeState.get() != 0; }
+    public float barrierHp() { return hpTenths.get() / 10.0f; }
+    public float barrierMaxHp() { return maxHpTenths.get() / 10.0f; }
+    public int bannerLevel() { return levelState.get(); }
+    public int kills() { return killsState.get(); }
+    public int claimedChunks() { return claimsState.get(); }
+    public int enchantCount() { return enchantCountState.get(); }
+    public int enchantSlots() { return enchantSlotsState.get(); }
+    public int mobsAttracted() { return mobsAttractedState.get(); }
+    public int explosionsBlocked() { return explosionsBlockedState.get(); }
 
     @Override
     public ItemStack quickMoveStack(Player player, int slot) { return ItemStack.EMPTY; }
