@@ -27,21 +27,32 @@ public final class GuardianBannerMenu extends AbstractContainerMenu {
         });
     }
 
-    private final DataSlot activeState = synced(b -> b.active() ? 1 : 0);
-    private final DataSlot hpTenths = synced(b -> Math.round(b.hp() * 10.0f));
-    private final DataSlot maxHpTenths = synced(b -> Math.round(b.maxHp() * 10.0f));
-    private final DataSlot levelState = synced(GuardianBannerBlockEntity::level);
-    private final DataSlot killsState = synced(GuardianBannerBlockEntity::kills);
-    private final DataSlot claimsState = synced(b -> b.maxExtraClaims() + 1);
-    private final DataSlot enchantCountState = synced(GuardianBannerBlockEntity::enchantCount);
-    private final DataSlot enchantSlotsState = synced(GuardianBannerBlockEntity::enchantSlots);
-    private final DataSlot mobsAttractedState = synced(b -> syncInt(b.mobsAttracted()));
-    private final DataSlot explosionsBlockedState = synced(b -> syncInt(b.explosionsBlocked()));
+    private final DataSlot activeState;
+    private final DataSlot hpTenths;
+    private final DataSlot maxHpTenths;
+    private final DataSlot levelState;
+    private final DataSlot killsState;
+    private final DataSlot claimsState;
+    private final DataSlot enchantCountState;
+    private final DataSlot enchantSlotsState;
+    private final DataSlot mobsAttractedState;
+    private final DataSlot explosionsBlockedState;
 
     public GuardianBannerMenu(int id, Inventory inventory, BlockPos pos) {
         super(ModMenus.GUARDIAN_BANNER.get(), id);
         this.pos = pos;
         this.level = inventory.player.level();
+        // Register synced values only after the position and level are initialized.
+        activeState = synced(b -> b.active() ? 1 : 0);
+        hpTenths = synced(b -> Math.round(b.hp() * 10.0f));
+        maxHpTenths = synced(b -> Math.round(b.maxHp() * 10.0f));
+        levelState = synced(GuardianBannerBlockEntity::level);
+        killsState = synced(GuardianBannerBlockEntity::kills);
+        claimsState = synced(b -> b.maxExtraClaims() + 1);
+        enchantCountState = synced(GuardianBannerBlockEntity::enchantCount);
+        enchantSlotsState = synced(GuardianBannerBlockEntity::enchantSlots);
+        mobsAttractedState = synced(b -> syncInt(b.mobsAttracted()));
+        explosionsBlockedState = synced(b -> syncInt(b.explosionsBlocked()));
     }
 
     public GuardianBannerBlockEntity banner() {
