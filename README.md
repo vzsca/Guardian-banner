@@ -1,5 +1,9 @@
 # IN DEVELOPEMENT ⚠️
 
+## Version 1.1.1 Beta
+
+[⬇️ Download Guardian Banner 1.1.1 Beta](https://github.com/vzsca/Guardian-banner/releases/download/v1.1.1/guardianbanner-1.4.3.jar)
+
 
 
 # Guardian Banner
