@@ -36,6 +36,8 @@ It provides configurable protection zones around Guardian Banners, owner/trusted
 
 ### Latest automated JAR
 
+⚠️ **No stable version of Guardian Banner is available yet.** The current JAR is a beta/automated build and may contain bugs or incomplete features.
+
 The JAR is built automatically by **GitHub Actions** and attached to the latest GitHub Release.
 
 **[⬇️ Download the latest Guardian Banner JAR](https://github.com/vzsca/Guardian-banner/releases/download/v1.1.1/guardianbanner-1.4.3.jar)**
