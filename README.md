@@ -34,7 +34,7 @@ It provides configurable protection zones around Guardian Banners, owner/trusted
 
 The JAR is built automatically by **GitHub Actions** and attached to the latest GitHub Release.
 
-**[⬇️ Download the latest Guardian Banner JAR](https://github.com/vzsca/Guardian-banner/releases/latest/download/guardianbanner.jar)**
+**[⬇️ Download the latest Guardian Banner JAR](https://github.com/vzsca/Guardian-banner/releases/download/v1.1.1/guardianbanner-1.4.3.jar)**
 
 A single click downloads the latest released JAR directly. No manual build or GitHub Actions page is required.
 
