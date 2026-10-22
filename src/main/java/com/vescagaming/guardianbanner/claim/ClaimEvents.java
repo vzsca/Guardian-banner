@@ -120,8 +120,13 @@ public final class ClaimEvents {
     public static void onPlayerTick(LivingEvent.LivingTickEvent event) {
         if (!(event.getEntity() instanceof Player player) || !(player.level() instanceof ServerLevel level)
                 || level.getGameTime() % 20 != 0) return;
-        BlockPos core = ClaimData.get(level).coreAt(new ChunkPos(player.blockPosition()));
-        if (!(level.getBlockEntity(core) instanceof GuardianBannerBlockEntity banner) || !banner.active()) return;
+        ClaimData data = ClaimData.get(level);
+        ChunkPos chunk = new ChunkPos(player.blockPosition());
+        BlockPos core = data.coreAt(chunk);
+        // No claim means no core: never pass null to Level#getBlockEntity.
+        if (core == null || !data.isAllowed(chunk, player.getUUID())
+                || !(level.getBlockEntity(core) instanceof GuardianBannerBlockEntity banner)
+                || !banner.active()) return;
 
         player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 40, 0, true, false));
         player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 40, 0, true, false));
@@ -150,8 +155,16 @@ public final class ClaimEvents {
     @SubscribeEvent
     public static void onDeath(LivingDeathEvent event) {
         if (!(event.getEntity().level() instanceof ServerLevel level) || !(event.getEntity() instanceof Monster)) return;
-        BlockPos core = ClaimData.get(level).coreAt(new ChunkPos(event.getEntity().blockPosition()));
-        if (core != null && level.getBlockEntity(core) instanceof GuardianBannerBlockEntity banner) banner.addKill();
+        // Progression is earned only when the claim owner personally kills a hostile mob
+        // inside their own claimed chunk. Environmental deaths and other players' kills do not count.
+        if (!(event.getSource().getEntity() instanceof ServerPlayer killer)) return;
+        ChunkPos chunk = new ChunkPos(event.getEntity().blockPosition());
+        ClaimData data = ClaimData.get(level);
+        if (!data.isOwner(chunk, killer.getUUID())) return;
+        BlockPos core = data.coreAt(chunk);
+        if (core != null && level.getBlockEntity(core) instanceof GuardianBannerBlockEntity banner) {
+            banner.addKill();
+        }
     }
 
     @SubscribeEvent

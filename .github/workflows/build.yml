@@ -31,6 +31,11 @@ jobs:
       - name: Build
         run: ./gradlew clean build --no-daemon
 
+      - name: Prepare GameTest structure
+        run: |
+          mkdir -p run/gameteststructures
+          cp src/main/resources/gameteststructures/empty.snbt run/gameteststructures/empty.snbt
+
       - name: GameTests
         run: ./gradlew runGameTestServer --no-daemon
 
